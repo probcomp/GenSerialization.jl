@@ -2,6 +2,10 @@ mutable struct GenFile{T<:IO}
     io::T
     path::String
     mode
+    header_length::Int
+end
+function GenFile(io::T, path::String, mode::String) where {T<:IO}
+    f = GenFile(io, path, mode, 0)
 end
 
 function openfile(T::Type, fname, mode)
@@ -38,6 +42,7 @@ end
 
 function genopen(f, fname::AbstractString, mode::String="r", iotype::T=IOStream) where T<: Union{Type{IOStream}}
     file = genopen(fname, mode, iotype)
-    f(file)
+    retval = f(file)
     close(file)
+    retval
 end

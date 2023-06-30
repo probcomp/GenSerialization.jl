@@ -1,22 +1,21 @@
 import Serialization: Serialization, serialize
 
-function Serialization.serialize(::AbstractString, ::Gen.Trace) end
-function Serialization.serialize(::IO, ::Gen.Trace) end
-
-function Serialization.serialize(filename::AbstractString, trace::Gen.DynamicDSLTrace)
+function Serialization.serialize(filename::AbstractString, trace::Gen.Trace)
     genopen(filename, "w") do f
-        Serialization.serialize(f, trace)
+        header_length = write_file_header(f)
+        serialize_trace(f.io, trace)
     end
 end
-
-function Serialization.serialize(f::GenFile, tr::Gen.DynamicDSLTrace{T}) where {T}
-    # Write gen header
-    write_file_header(f)
-    # Write gen header
-    # Write trace Type
-    # Write address map
-    # Write value map
+function Serialization.serialize(::IO, ::Gen.Trace)
+    file = GenFile(io, "", "w")
 end
+
+# function Serialization.serialize(filename::AbstractString, trace::Gen.DynamicDSLTrace)
+#     genopen(filename, "w") do f
+#         Serialization.serialize(f, trace)
+#     end
+# end
+
 
 
 # serialize_trace(tr::T) where T <: Gen.Trace

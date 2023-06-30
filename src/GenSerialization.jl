@@ -1,12 +1,13 @@
 module GenSerialization
 using Gen
 
-
-
-
-
-# RECORD_INFO = NamedTuple{(:record_ptr, :record_size, :is_trace), Tuple{Int64, Int64, Bool}}
-
+function io_size(io::IO)
+    cuptr = position(io)
+    seekend(io)
+    size = position(io)
+    seek(io, cuptr)
+    return size
+end
 # function Gen.set_internal_node!(trie::Trie{K,V}, addr::Pair) where {K,V}
 #     (first, rest) = addr
 #     if haskey(trie.internal_nodes, first)
@@ -24,6 +25,7 @@ using Gen
 # include("lazy/lazy.jl")
 # include("dynamic/serialization.jl")
 include("gen_file.jl")
+include("dsl/dsl.jl")
 include("file_header.jl")
 include("serialization.jl")
 include("deserialization.jl")

@@ -13,8 +13,9 @@ function verify_file_header(f)
     title == HEADER_TITLE || error("Invalid file header. Likely not a Gen trace file.")
 
     ver = VersionNumber(String(readuntil(io, 0x00)))
-    # TODO version testing
-    return
+    julia_info = String(readuntil(io, 0x00))
+    
+    return position(io)
 end
 
 function write_file_header(f)

@@ -2,5 +2,6 @@ using GenSerialization
 using Test
 
 @testset "GenSerialization.jl" begin
-    # Write your tests here.
+    Test.runtests("DynamicDSLTrace Serialization")
 end
+include("dsl/dsl.jl")
