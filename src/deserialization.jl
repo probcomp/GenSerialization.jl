@@ -1,3 +1,10 @@
+function deserialize_trace(io::IO)
+    cuptr = position(io)
+    trace_type = Serialization.deserialize(io)
+    seek(io, cuptr)
+    deserialize_trace(io, trace_type)
+end
+
 function deserialize(fname::AbstractString)
     genopen(fname, "r") do f
         header_length = verify_file_header(f)
@@ -14,5 +21,4 @@ function realize(fname::AbstractString, gen_fn::GenerativeFunction)
     end
 end
 
-export deserialize 
-export realize
+export deserialize, realize
