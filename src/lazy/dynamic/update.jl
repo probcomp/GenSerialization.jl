@@ -87,7 +87,6 @@ function Gen.traceat(state::GFLazyUpdateState, gen_fn::GenerativeFunction{T,U},
     if has_previous
         prev_call = Gen.get_call(state.prev_trace, key)
         prev_subtrace = prev_call.subtrace
-        # println("Prev subtrace: ", typeof(prev_subtrace))
         @show Gen.get_gen_fn(prev_subtrace)
         if isa(prev_subtrace, LazyDynamicTrace)
             if Gen.get_gen_fn(prev_subtrace) !== nothing

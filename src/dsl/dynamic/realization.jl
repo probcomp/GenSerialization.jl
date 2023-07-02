@@ -68,17 +68,11 @@ function Gen.traceat(state::GFDeserializeState, dist::Gen.Distribution{T}, args,
     # constrained = has_value(state.constraints, key)
     # !constrained && check_no_submap(state.constraints, key)
 
-    # intercept logpdf
     score = record.score
     @debug "TRACEAT DIST" key record score retval args dist
 
     # add to the trace
     Gen.add_choice!(state.trace, key, retval, score)
-
-    # increment weight
-    # if constrained
-        # state.weight += score
-    # end
 
     retval
 end
