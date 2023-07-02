@@ -30,6 +30,7 @@ function deserialize_trie(io::IO, ptr_trie, tr, prefix::Tuple=())
         deserialize_trie(io, subtrie, tr, flattened_key)
     end
 end
+
 function convert_to_lazy_trace(io::IO, ptr_trie, isempty, score, noise, args, retval)
     trie = Trie{Any, Gen.ChoiceOrCallRecord}()
     tr = LazyDynamicDSL.LazyDynamicTrace(trie, isempty, score, noise, args, retval)
