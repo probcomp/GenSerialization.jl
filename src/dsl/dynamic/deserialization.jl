@@ -97,5 +97,4 @@ function deserialize_trace(io::IO, ::Type{Gen.DynamicDSLTrace{T}}) where {T}
     end
 
     trace = convert_to_lazy_trace(io, ptr_trie, isempty, score, noise, args, retval)
-    trace
 end

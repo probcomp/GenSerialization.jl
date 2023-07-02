@@ -1,3 +1,3 @@
 
 include("dynamic/dynamic.jl")
-include("combinators/combinators.jl")
+include("combinators/vector.jl")

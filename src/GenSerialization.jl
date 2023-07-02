@@ -10,6 +10,7 @@ function io_size(io::IO)
 end
 
 include("gen_file.jl")
+include("write_session.jl")
 include("dsl/dsl.jl")
 include("lazy/lazy.jl")
 include("file_header.jl")
