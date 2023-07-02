@@ -6,27 +6,20 @@ function Serialization.serialize(filename::AbstractString, trace::Gen.Trace)
         serialize_trace(f.io, trace)
     end
 end
-function Serialization.serialize(::IO, ::Gen.Trace)
-    file = GenFile(io, "", "w")
+# function Serialization.serialize(::IO, ::Gen.Trace)
+#     file = GenFile(io, "", "w")
+# end
+
+function coarse_serialize(filename::AbstractString, trace::Gen.Trace)
+    genopen(filename, "w") do f
+        header_length = write_file_header(f)
+        coarse_serialize(f.io, trace)
+    end
 end
 
-# function Serialization.serialize(filename::AbstractString, trace::Gen.DynamicDSLTrace)
-#     genopen(filename, "w") do f
-#         Serialization.serialize(f, trace)
-#     end
-# end
+function coarse_serialize(io::IO, trace::Gen.Trace)
+    lazy = LazyDynamicDSL.convert_to_lazy(trace)
+    Serialization.serialize(io, lazy)
+end
 
-
-
-# serialize_trace(tr::T) where T <: Gen.Trace
-
-# function _deserialize_lazy(io::IO; gen_fn=nothing)
-#     restore_ptr = io.ptr
-#     trace_type = Serialization.deserialize(io)
-#     io.ptr = restore_ptr
-#     _deserialize_lazy(io, trace_type, gen_fn=gen_fn)
-# end
-# export _deserialize
-# export serialize
-# export _deserialize_lazy
-export serialize
+export serialize, coarse_serialize

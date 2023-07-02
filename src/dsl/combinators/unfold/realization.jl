@@ -1,22 +1,27 @@
-mutable struct MapDeserializeState{T,U}
+mutable struct UnfoldDeserializeState{T,U}
     score::Float64
     noise::Float64
     subtraces::Vector{U}
     retval::Vector{T}
     num_nonempty::Int
+    state::T
 end
 
-function realize_trace(io::IO, gen_fn::Map{T,U}) where {T,U}
+function realize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
     trace_type = Serialization.deserialize(io)
+    !(trace_type <: Gen.VectorTrace) && error("Expected VectorTrace, got $trace_type")
     retval = Serialization.deserialize(io)
     args = Serialization.deserialize(io)
     len = read(io, Int)
     num_nonempty = read(io, Int)
     score = read(io, Float64)
     noise = read(io, Float64)
-    len = length(args[1])
+
+    init_state = args[2]
+    params = args[3:end]
+    state = UnfoldDeserializeState{T,U}(0., 0.,
+        Vector{U}(undef,len), Vector{T}(undef,len), 0, init_state)
     base_ptr = position(io)
-    state = MapDeserializeState{T,U}(0., 0., Vector{U}(undef,len), Vector{T}(undef,len), 0)
     for key=1:len
         seek(io, base_ptr + (key-1)*sizeof(Int))
         tr_ptr = read(io, Int)
@@ -25,7 +30,6 @@ function realize_trace(io::IO, gen_fn::Map{T,U}) where {T,U}
         state.subtraces[key] = subtrace
         retval = get_retval(subtrace)
         state.retval[key] = retval
-        println("Subtrace ", subtrace)
     end
     state.noise = noise
     state.num_nonempty = num_nonempty

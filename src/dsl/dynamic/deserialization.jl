@@ -33,7 +33,7 @@ end
 
 function convert_to_lazy_trace(io::IO, ptr_trie, isempty, score, noise, args, retval)
     trie = Trie{Any, Gen.ChoiceOrCallRecord}()
-    tr = LazyDynamicDSL.LazyDynamicTrace(trie, isempty, 0.0, noise, args, retval)
+    tr = LazyDynamicTrace(trie, isempty, 0.0, noise, args, retval)
     deserialize_trie(io, ptr_trie, tr)
     tr.score = score
     # Traverse trie

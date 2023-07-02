@@ -128,3 +128,32 @@ end
 function Base.getindex(trace::LazyDynamicTrace, addr)
     _getindex(trace, trace.trie, addr)
 end
+
+function convert_trie(trie::Trie{Any,ChoiceOrCallRecord})
+    new_trie = Trie{Any,ChoiceOrCallRecord}() 
+    for (addr, choice_or_call) in trie.leaf_nodes
+        if choice_or_call.is_choice
+            new_trie[addr] = ChoiceOrCallRecord(choice_or_call.subtrace_or_retval, choice_or_call.score, NaN, true)
+        else
+            new_trie[addr] = ChoiceOrCallRecord(convert_to_lazy(choice_or_call.subtrace_or_retval), choice_or_call.score, choice_or_call.noise, false)
+        end
+    end
+    
+    for (addr, subtrie) in trie.internal_nodes
+        inner = convert_trie(subtrie)
+        set_internal_node!(new_trie, addr, inner)
+    end
+    new_trie
+end
+
+function convert_to_lazy(tr::DynamicDSLTrace)
+    trie::Trie = tr.trie
+    new_trie = convert_trie(trie)
+
+    isempty::Bool = tr.isempty
+    score::Float64 = tr.score
+    noise::Float64 = tr.noise
+    args::Tuple = tr.args
+    retval::Any = tr.retval
+    tr = LazyDynamicTrace(new_trie, isempty, score, noise, args, retval)
+end

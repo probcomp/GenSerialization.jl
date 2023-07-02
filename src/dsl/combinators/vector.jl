@@ -1,7 +1,6 @@
 function serialize_vector(io::IO, vector, ws::WriteSession)
     # Pointers to subtraces
     base_ptr = position(io)
-    println("Base ptr $base_ptr")
     for i=1:length(vector) 
         genwrite(io, 0, ws)
     end
@@ -18,7 +17,7 @@ function serialize_vector(io::IO, vector, ws::WriteSession)
     end
 end
 
-function serialize_trace(io::IO, tr::Gen.VectorTrace{Gen.MapType, U, V}) where {U,V}
+function serialize_trace(io::IO, tr::Gen.VectorTrace{C, U, V}) where {C,U,V}
     cuptr = position(io)
     ws = WriteSession(cuptr)
     genwrite(io, typeof(tr), ws, Val{:serialized}())
@@ -34,5 +33,11 @@ function serialize_trace(io::IO, tr::Gen.VectorTrace{Gen.MapType, U, V}) where {
     return length(ws)
 end
 
-include("realization.jl")
-include("deserialization.jl")
+include("map/realization.jl")
+include("map/deserialization.jl")
+include("unfold/realization.jl")
+# include("unfold/deserialization.jl")
+# include("switch/realization.jl")
+# include("switch/deserialization.jl")
+# include("recurse/realization.jl")
+# include("recurse/deserialization.jl")
