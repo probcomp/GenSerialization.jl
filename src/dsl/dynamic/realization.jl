@@ -2,7 +2,6 @@
 # DESERIALIZATION
 ##################
 
-
 mutable struct GFDeserializeState{F,T<:IO}
     trace::Gen.DynamicDSLTrace{F}
     io::T
@@ -113,7 +112,6 @@ end
 
 function Gen.splice(state::GFDeserializeState, gen_fn::Gen.DynamicDSLFunction,
                 args::Tuple)
-    println("Splice")
     prev_params = state.params
     state.params = gen_fn.params
     retval = Gen.exec(gen_fn, state, args)
