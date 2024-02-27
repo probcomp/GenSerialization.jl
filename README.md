@@ -23,10 +23,10 @@ trace = simulate(model, (0.2))
 serialize("coin_flip.gen", trace)
 ```
 
-2. To deserialize, there are currently two options. They different in performance, but the faster one currently requires non-DRY data structures.
+2. Read in a trace by passing in the generative function:
 ```julia
 saved_trace = deserialize("coin_flip.gen") # Fast
-saved_trace = realize("coin_flip.gen") # Slow
+saved_trace = deserialize("coin_flip.gen", ) # Slow
 ```
 
 ## Warnings

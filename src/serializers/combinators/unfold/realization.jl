@@ -7,7 +7,7 @@ mutable struct UnfoldDeserializeState{T,U}
     state::T
 end
 
-function realize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
+function deseiralize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
     trace_type = Serialization.deserialize(io)
     !(trace_type <: Gen.VectorTrace) && error("Expected VectorTrace, got $trace_type")
     retval = Serialization.deserialize(io)
@@ -26,7 +26,7 @@ function realize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
         seek(io, base_ptr + (key-1)*sizeof(Int))
         tr_ptr = read(io, Int)
         seek(io, tr_ptr)
-        subtrace = realize_trace(io, gen_fn.kernel)
+        subtrace = deserialize_trace(io, gen_fn.kernel)
         state.subtraces[key] = subtrace
         retval = get_retval(subtrace)
         state.retval[key] = retval

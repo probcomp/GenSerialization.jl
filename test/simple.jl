@@ -17,7 +17,7 @@ end
     serialize("test.gen", tr)
 
     # Realization
-    recovered_tr = realize("test.gen", model)
+    recovered_tr = deserialize("test.gen", model)
     @test test_equality(tr, recovered_tr)
 
     # Deserialization

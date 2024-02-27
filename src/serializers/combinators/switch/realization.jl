@@ -7,7 +7,7 @@
 #     SwitchDeserializeState{T}(score::Float64, noise::Float64) where T = new{T}(score, noise)
 # end
 
-# function realize_trace(io::IO, gen_fn::Switch{C, N, K, T}) where {C, N, K, T}
+# function deserialize_trace(io::IO, gen_fn::Switch{C, N, K, T}) where {C, N, K, T}
 #     trace_type = Serialization.deserialize(io)
 #     !(trace_type <: Gen.VectorTrace) && error("Expected VectorTrace, got $trace_type")
 #     retval = Serialization.deserialize(io)

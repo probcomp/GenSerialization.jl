@@ -16,7 +16,7 @@ Each file contains a
 include("gen_file.jl")
 include("write_session.jl")
 include("serializers/serializers.jl")
-include("lazy_structs/lazy_structs.jl")
+# include("lazy_structs/lazy_structs.jl")
 include("file_header.jl")
 include("serialization.jl")
 include("deserialization.jl")
@@ -29,7 +29,7 @@ DEFAULT_TYPES = [
 ]
 for tr_type in DEFAULT_TYPES
     precompile(serialize, (String, tr_type[1]))
-    precompile(realize, (String, tr_type[2]))
+    precompile(deserialize, (String, tr_type[2]))
 end
 
 end

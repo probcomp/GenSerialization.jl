@@ -96,7 +96,7 @@ function Gen.traceat(state::GFDeserializeState, gen_fn::Gen.GenerativeFunction{T
     end
 
     # get subtrace
-    subtrace = realize_trace(state.io, gen_fn)
+    subtrace = deserialize_trace(state.io, gen_fn)
 
     # add to the trace
     Gen.add_call!(state.trace, key, subtrace)
@@ -119,7 +119,7 @@ function Gen.splice(state::GFDeserializeState, gen_fn::Gen.DynamicDSLFunction,
     retval
 end
 
-function realize_trace(io::IO, gen_fn::Gen.DynamicDSLFunction)
+function deserialize_trace(io::IO, gen_fn::Gen.DynamicDSLFunction)
     state = GFDeserializeState(gen_fn, io, gen_fn.params)
     _ = Gen.exec(gen_fn, state, state.trace.args)
     Gen.set_retval!(state.trace, Gen.get_retval(state.trace))

@@ -17,12 +17,12 @@ mapped_model = Map(model)
     tr = simulate(mapped_model, ([2,3,4],))
     serialize("test.gen", tr)
 
-    recovered_tr = realize("test.gen", model)
+    recovered_tr = deserialize("test.gen", model)
     # @test test_equality(tr, recovered_tr)
 
     # Deserialization
     # recovered_tr = deserialize("test.gen")
     # recovered_tr.gen_fn = model
     # @test test_equality(tr, recovered_tr)
-    # realized_tr = realize("test.gen", mapped_model)
+    # realized_tr = deserialize("test.gen", mapped_model)
 end
