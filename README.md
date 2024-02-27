@@ -3,9 +3,9 @@
 WIP tool to serialize Gen.jl traces using Julia's `serialization` library. Gen.jl traces often contain ephemeral data related to the generative model (a function), and this script decouples their dependency. Both traced and untraced randomness are considered.
 
 ## Installation
-In the REPL, run
+In the package manager, run
 ```
-]add https://github.com/probcomp/GenSerialization.jl.git
+add https://github.com/probcomp/GenSerialization.jl.git
 ```
 
 ## Usage
@@ -25,8 +25,7 @@ serialize("coin_flip.gen", trace)
 
 2. Read in a trace by passing in the generative function:
 ```julia
-saved_trace = deserialize("coin_flip.gen") # Fast
-saved_trace = deserialize("coin_flip.gen", ) # Slow
+saved_trace = deserialize("coin_flip.gen", model)
 ```
 
 ## Warnings
