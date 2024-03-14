@@ -32,7 +32,7 @@ function serialize_trace(io::IO, tr::Gen.VectorTrace{C, U, V}) where {C,U,V}
     return length(ws)
 end
 
-function deserialize_trace(io::IO, tr::Type{Gen.VectorTrace{C, U, V}}) where {C,U,V}
+function deserialize_trace(io::IO, ::Type{Gen.VectorTrace{C, U, V}}) where {C,U,V}
     trace_type = Serialization.deserialize(io)
     retval = Serialization.deserialize(io)
     args = Serialization.deserialize(io)

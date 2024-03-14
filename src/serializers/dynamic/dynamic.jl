@@ -1,15 +1,14 @@
 RECORD_INFO = NamedTuple{(:record_ptr, :record_size, :is_trace), Tuple{Int64, Int64, Bool}}
 
 function read_address_maps(io::IO, ptr_trie::Trie{Any, RECORD_INFO}, prefix::Tuple)
-
     cuptr = position(io)
     leaf_map_ptr = read(io, Int)
     internal_map_ptr = read(io, Int)
     # @debug "[LEAF MAP] [INTERNAL MAP PTR]" current_trie leaf_map_ptr internal_map_ptr
     leaf_count = read(io, Int)
     # @debug "LEAF COUNT" leaf_count
-    for i=1:leaf_count
-        addr = foldr(=> , (prefix..., Serialization.deserialize(io)))
+    for _ in 1:leaf_count
+        addr = foldr(=> , (prefix...,  Serialization.deserialize(io)))
         record_ptr = read(io, Int)
         record_size = read(io, Int)
         is_trace = read(io, Bool)
@@ -42,5 +41,5 @@ function read_address_maps(io::IO, ptr_trie::Trie{Any, RECORD_INFO}, prefix::Tup
     ptr_trie
 end
 
-include("serialization.jl")
-include("realization.jl")
+include("serialize.jl")
+include("deserialize.jl")

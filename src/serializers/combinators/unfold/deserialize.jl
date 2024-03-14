@@ -7,7 +7,7 @@ mutable struct UnfoldDeserializeState{T,U}
     state::T
 end
 
-function deseiralize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
+function deserialize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
     trace_type = Serialization.deserialize(io)
     !(trace_type <: Gen.VectorTrace) && error("Expected VectorTrace, got $trace_type")
     retval = Serialization.deserialize(io)
@@ -34,7 +34,7 @@ function deseiralize_trace(io::IO, gen_fn::Unfold{T,U}) where {T,U}
     state.noise = noise
     state.num_nonempty = num_nonempty
     state.score = score
-    Gen.VectorTrace{Gen.MapType,T,U}(gen_fn,
+    Gen.VectorTrace{Gen.UnfoldType,T,U}(gen_fn,
         Gen.PersistentVector{U}(state.subtraces), Gen.PersistentVector{T}(state.retval),
         args, state.score, state.noise, len, state.num_nonempty)
 end
