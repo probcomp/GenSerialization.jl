@@ -1,12 +1,12 @@
 using Gen
 using GenSerialization
-using BenchmarkTools
 
 # A simple model
 @gen function coin_model(p)
     x ~ bernoulli(p)
     return 1-x
 end
+
 tr = simulate(coin_model,(0.5,))
 serialize("test.gen", tr)
 saved_tr = deserialize("test.gen", coin_model)
@@ -18,5 +18,4 @@ vector_coin_model = Map(coin_model)
 coins = simulate(vector_coin_model, ([0.25,0.5,0.75],))
 serialize("test.gen", coins)
 deserialized_tr = deserialize("test.gen", vector_coin_model)
-# deserialized_tr = deserialize("test.gen")
-t, _ = update(deserialized_tr, ([0.1, 0.1, 0.1], ), (UnknownChange,), choicemap())
+tr, _ = update(deserialized_tr, ([0.1, 0.1, 0.1], ), (UnknownChange,), choicemap())

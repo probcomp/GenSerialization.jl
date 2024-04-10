@@ -2,18 +2,20 @@ using GenSerialization
 using Gen
 using Test
 
-function test_equality(expected::Gen.DynamicDSLTrace, given)
-    """
-    TODO: Not an extensive set of tests. 
-    """
-    # TODO: Not extensive
-    @assert expected.score != given.score
-    @assert expected.args == given.args
-    @assert expected.ret == given.ret
+function roundtrip_test(tr::Gen.Trace, model::Gen.GenerativeFunction)
+    io = IOBuffer()
+    serialize(io, tr)
+    seekstart(io)
+    recovered_tr = deserialize(io, model)
+
+    test_equality(tr, recovered_tr)
+    return true
 end
 
+
+
+include("equality.jl")
 include("simple.jl")
-include("map.jl")
-include("switch.jl")
-include("unfold.jl")
-include("dsl/dsl.jl")
+include("combinators.jl")
+
+return

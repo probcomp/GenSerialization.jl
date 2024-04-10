@@ -24,6 +24,7 @@ function openfile(T::Type, fname, mode)
         @warn "No fallback!"
     end
 end
+
 function openfile(::Type{IOStream}, fname, mode)
     open(fname, mode)
 end
@@ -31,21 +32,14 @@ end
 FallbackType(::Type{IOStream}) = nothing
 
 function genopen(fname::AbstractString, mode::String="r", iotype::T=IOStream) where T <: Union{Type{IOStream}}
-    exists = ispath(fname)
-    # TODO: Add safety locks with a 'finally' clause
     f = try
         io = openfile(iotype, fname, mode)
         rname = realpath(fname)
-        f = GenFile(io, rname, mode)
-        f
+        GenFile(io, rname, mode)
     catch e
         rethrow(e)
     end
     f
-end
-
-function close(f::GenFile)
-    Base.close(f.io)
 end
 
 function genopen(f, fname::AbstractString, mode::String="r", iotype::T=IOStream) where T<: Union{Type{IOStream}}
@@ -54,3 +48,5 @@ function genopen(f, fname::AbstractString, mode::String="r", iotype::T=IOStream)
     close(file)
     retval
 end
+
+close(f::GenFile) = Base.close(f.io)

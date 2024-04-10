@@ -15,11 +15,8 @@ Each file contains a
 
 include("gen_file.jl")
 include("write_session.jl")
-include("serializers/serializers.jl")
-# include("lazy_structs/lazy_structs.jl")
+include("serializers/serialization.jl")
 include("file_header.jl")
-include("serialization.jl")
-include("deserialization.jl")
 
 # Native caching
 precompile(deserialize, (String,))

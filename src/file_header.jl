@@ -8,9 +8,7 @@ const HEADER = "$(HEADER_TITLE)$(FORMAT_VERSION)\x00(Julia $(VERSION) $(sizeof(I
 
 @assert length(HEADER) <= FILE_HEADER_LENGTH
 
-function verify_file_header(f)
-    io = f.io
-    seekstart(io)
+function verify_file_header(io::IO)
     title = String(read!(io, Vector{UInt8}(undef, length(HEADER_TITLE))))
     title == HEADER_TITLE || error("Invalid file header. Likely not a Gen trace file.")
 
@@ -20,9 +18,9 @@ function verify_file_header(f)
     return position(io)
 end
 
-function write_file_header(f)
-    io = f.io
-    seekstart(io)
+function write_file_header(io::IO)
     write(io, HEADER)
     return length(HEADER)
 end
+
+write_file_header(f) = write_file_header(f.io)
