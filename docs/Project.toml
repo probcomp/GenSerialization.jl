@@ -1,0 +1,7 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Gen = "ea4f424c-a589-11e8-07c0-fd5c91b9da4a"
+GenSerialization = "21e319bb-9f6a-4cc8-b556-663507cd964d"
+
+[compat]
+Documenter = "1.0"
