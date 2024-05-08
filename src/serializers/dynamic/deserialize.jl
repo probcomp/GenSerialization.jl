@@ -64,9 +64,6 @@ function Gen.traceat(state::GFDeserializeState, dist::Gen.Distribution{T}, args,
     retval = record.subtrace_or_retval
     # Check if it is truly a retval
 
-    # constrained = has_value(state.constraints, key)
-    # !constrained && check_no_submap(state.constraints, key)
-
     score = record.score
     @debug "TRACEAT DIST" key record score retval args dist
 
@@ -102,7 +99,6 @@ function Gen.traceat(state::GFDeserializeState, gen_fn::Gen.GenerativeFunction{T
     Gen.add_call!(state.trace, key, subtrace)
 
     # update weight
-    # state.weight += weight # TODO: What?
 
     # get return value
     retval = get_retval(subtrace) 
